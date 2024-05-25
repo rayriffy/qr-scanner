@@ -2,9 +2,9 @@ import { useEffect, useRef, useState } from 'react'
 import QrScanner from 'qr-scanner'
 
 import type { RefObject } from 'react'
-import type { QrScannerLibOptions } from './types'
+import type { QRScannerLibOptions } from './types'
 
-interface Options extends QrScannerLibOptions {
+interface Options extends QRScannerLibOptions {
   onStart?: () => void
   onResult: (result: QrScanner.ScanResult) => void
   onError: (error: string | Error) => void
