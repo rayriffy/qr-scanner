@@ -1,1 +1,4 @@
-export const foo = 'bar'
+export { QRScanner } from './qrScanner'
+export { useQRScanner } from './useQRScanner'
+
+export type { QRScannerLibOptions, QRScannerProps } from './types'

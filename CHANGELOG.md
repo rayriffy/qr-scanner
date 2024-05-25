@@ -1,4 +1,4 @@
-# @rayriffy/quick-npm
+# @rayriffy/qr-scanner
 
 ## 0.0.2
 

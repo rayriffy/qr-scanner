@@ -1,3 +1,5 @@
 import { defineConfig } from 'tsup'
 
-export default defineConfig({})
+export default defineConfig({
+  external: ['react', 'qr-scanner'],
+})
