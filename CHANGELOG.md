@@ -1,5 +1,11 @@
 # @rayriffy/qr-scanner
 
+## 1.0.0
+
+### Major Changes
+
+- e04160f: initial release
+
 ## 0.0.2
 
 ### Patch Changes
