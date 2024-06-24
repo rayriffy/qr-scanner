@@ -1,5 +1,11 @@
 import QrScanner from 'qr-scanner'
-import type { DetailedHTMLProps, HTMLAttributes, ReactNode } from 'react'
+import type {
+  ComponentProps,
+  DetailedHTMLProps,
+  FunctionComponent,
+  HTMLAttributes,
+  ReactNode,
+} from 'react'
 
 export type QRScannerLibOptions = Omit<
   ConstructorParameters<typeof QrScanner>[2],
@@ -11,6 +17,6 @@ export interface QRScannerProps
     DetailedHTMLProps<HTMLAttributes<HTMLVideoElement>, HTMLVideoElement>,
     'ref'
   > {
-  error?: ReactNode
+  error?: (errorMessage: string) => ReactNode
   onScan?: (text: string) => void
 }

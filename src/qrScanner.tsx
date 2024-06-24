@@ -16,7 +16,8 @@ export const QRScanner: FunctionComponent<QRScannerProps> = ({
     onError: err => console.error(err),
   })
 
-  if (initErrorMessage) return error ?? <div>{initErrorMessage}</div>
+  if (initErrorMessage)
+    return error?.(initErrorMessage) ?? <div>{initErrorMessage}</div>
 
   return <video ref={videoRef} {...rest} />
 }
