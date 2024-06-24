@@ -1,5 +1,11 @@
 # @rayriffy/qr-scanner
 
+## 1.0.1
+
+### Patch Changes
+
+- 9aad603: allow error component to inherit error message
+
 ## 1.0.0
 
 ### Major Changes
