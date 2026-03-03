@@ -1,5 +1,11 @@
 # @rayriffy/qr-scanner
 
+## 1.0.2
+
+### Patch Changes
+
+- 926df38: change react peer dependency version to support all react versions
+
 ## 1.0.1
 
 ### Patch Changes
