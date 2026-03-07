@@ -1,16 +1,13 @@
-import QrScanner from 'qr-scanner'
 import type {
-  ComponentProps,
   DetailedHTMLProps,
-  FunctionComponent,
   HTMLAttributes,
   ReactNode,
 } from 'react'
+import type { QRCanvasOpts } from 'qr/dom.js'
 
-export type QRScannerLibOptions = Omit<
-  ConstructorParameters<typeof QrScanner>[2],
-  'onDecodeError'
->
+export type QRScannerLibOptions = Partial<QRCanvasOpts> & {
+  fullSize?: boolean
+}
 
 export interface QRScannerProps
   extends Omit<

@@ -1,79 +1,74 @@
 import { useEffect, useRef, useState } from 'react'
-import QrScanner from 'qr-scanner'
+import { QRCanvas, frameLoop, frontalCamera } from 'qr/dom.js'
 
 import type { RefObject } from 'react'
 import type { QRScannerLibOptions } from './types'
 
+type ScanResult = {
+  data: string
+}
+
 interface Options extends QRScannerLibOptions {
   onStart?: () => void
-  onResult: (result: QrScanner.ScanResult) => void
+  onResult: (result: ScanResult) => void
   onError: (error: string | Error) => void
 }
 
 export const useQRScanner = (
   videoRef: RefObject<HTMLVideoElement>,
-  { onStart, onResult, onError, ...rest }: Options
+  { onStart, onResult, onError, fullSize, ...rest }: Options
 ) => {
   const [initErrorMessage, setInitErrorMessage] = useState<string>()
-  const scanner = useRef<QrScanner | null>(null)
+  const camera = useRef<Awaited<ReturnType<typeof frontalCamera>> | null>(null)
+  const canvas = useRef<QRCanvas | null>(null)
+  const stopFrameLoop = useRef<(() => void) | null>(null)
+  const hasResult = useRef(false)
 
   useEffect(() => {
-    if (videoRef.current && !scanner.current) {
-      scanner.current = new QrScanner(
-        videoRef.current,
-        result => {
-          scanner.current?.stop()
-          onResult(result)
-        },
-        {
-          preferredCamera: 'environment',
-          onDecodeError: err => {
-            const errorString = err.toString()
-            if (err && !errorString.includes('No QR code found')) {
-              onError(err)
-            }
-          },
-          highlightScanRegion: true,
-          highlightCodeOutline: true,
-          calculateScanRegion: v => {
-            const videoWidth = v.videoWidth
-            const videoHeight = v.videoHeight
-            const factor = 0.5
-            const size = Math.floor(Math.min(videoWidth, videoHeight) * factor)
-            return {
-              x: (videoWidth - size) / 2,
-              y: (videoHeight - size) / 2,
-              width: size,
-              height: size,
-            }
-          },
-          ...rest,
-        }
-      )
-    }
-  })
+    let unmounted = false
 
-  useEffect(() => {
     ;(async () => {
       try {
-        await scanner.current?.start()
+        if (!videoRef.current) return
+        canvas.current = new QRCanvas(undefined, rest)
+        camera.current = await frontalCamera(videoRef.current)
+        if (unmounted) return
+
+        stopFrameLoop.current = frameLoop(() => {
+          try {
+            if (!canvas.current || !camera.current || hasResult.current) return
+            const data = camera.current.readFrame(canvas.current, fullSize)
+            if (!data) return
+            hasResult.current = true
+            stopFrameLoop.current?.()
+            camera.current.stop()
+            onResult({ data })
+          } catch (error) {
+            onError(error as Error)
+          }
+        })
+
         if (onStart) {
           onStart()
         }
       } catch (error) {
-        console.error(error)
-        setInitErrorMessage((error as Error).toString())
+        if (!unmounted) {
+          setInitErrorMessage((error as Error).toString())
+        }
       }
     })()
-  }, [videoRef, onStart, onResult, onError])
 
-  useEffect(() => {
     return () => {
-      scanner.current?.stop()
-      scanner.current?.destroy()
-      scanner.current = null
+      unmounted = true
+      hasResult.current = false
+      stopFrameLoop.current?.()
+      stopFrameLoop.current = null
+      camera.current?.stop()
+      camera.current = null
+      canvas.current?.clear()
+      canvas.current = null
     }
-  })
+  }, [videoRef, onStart, onResult, onError, fullSize, rest])
 
   return { initErrorMessage }
 }

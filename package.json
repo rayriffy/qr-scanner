@@ -38,7 +38,7 @@
     "react": ">=17.0.0"
   },
   "dependencies": {
-    "qr-scanner": "^1.4.2"
+    "qr": "^0.5.4"
   },
   "devDependencies": {
     "@changesets/cli": "2.27.3",
