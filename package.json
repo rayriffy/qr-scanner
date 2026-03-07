@@ -1,6 +1,6 @@
 {
   "name": "@rayriffy/qr-scanner",
-  "version": "1.0.2",
+  "version": "2.0.0",
   "author": "Phumrapee Limpianchop <mail@rayriffy.com>",
   "description": "Just another QR scanner for React",
   "license": "MIT",

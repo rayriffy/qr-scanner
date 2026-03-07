@@ -1,5 +1,11 @@
 # @rayriffy/qr-scanner
 
+## 2.0.0
+
+### Major Changes
+
+- 7fb95e6: change core engine from qr-scanner to qr
+
 ## 1.0.2
 
 ### Patch Changes
