@@ -10,10 +10,11 @@ export type QRScannerLibOptions = Partial<QRCanvasOpts> & {
 }
 
 export interface QRScannerProps
-  extends Omit<
-    DetailedHTMLProps<HTMLAttributes<HTMLVideoElement>, HTMLVideoElement>,
-    'ref'
-  > {
+  extends QRScannerLibOptions,
+    Omit<
+      DetailedHTMLProps<HTMLAttributes<HTMLVideoElement>, HTMLVideoElement>,
+      'ref' | keyof QRScannerLibOptions
+    > {
   error?: (errorMessage: string) => ReactNode
   onScan?: (text: string) => void
 }
