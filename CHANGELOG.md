@@ -1,5 +1,11 @@
 # @rayriffy/qr-scanner
 
+## 2.0.1
+
+### Patch Changes
+
+- 6212897: make QR decode start on video play and reliably trigger onScan
+
 ## 2.0.0
 
 ### Major Changes
